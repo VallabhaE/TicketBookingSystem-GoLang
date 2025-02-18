@@ -19,3 +19,10 @@ Date := 18 Feb 2025
 7. and add Payment system also use Any Payment Gateway.
 
 ```
+
+
+
+DataBase Design for now
+**Date := 18 Feb 2025**
+![image](https://github.com/user-attachments/assets/fc1370e0-5acb-4164-8606-337024acc891)
+
