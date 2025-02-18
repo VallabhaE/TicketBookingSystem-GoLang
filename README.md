@@ -24,5 +24,5 @@ Date := 18 Feb 2025
 
 DataBase Design for now
 **Date := 18 Feb 2025**
-![image](https://github.com/user-attachments/assets/181b0e57-165e-4e62-a6b9-1eacedcf1ad4)
+![image](https://github.com/user-attachments/assets/d7ac0e50-9ef5-43e5-98dc-b626923fb5ef)
 
