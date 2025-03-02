@@ -9,6 +9,13 @@
 
 use MovieTicketBooking;
 
+create table users (
+	id int auto_increment primary key,
+    username varchar(255) not null,
+    email varchar(255) not null,
+    password varchar(500) not null
+);
+
 create table Theaters (
 	id int auto_increment primARY KEY,
     TheaterName varchar(255) not null,
