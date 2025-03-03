@@ -3,7 +3,6 @@ package dao
 import (
 	"database/sql"
 	"fmt"
-
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -13,13 +12,22 @@ var (
 )
 
 // Init is Mandatory before moving to other functions
-func InitDD(){
+func InitDB(){
 	dsn := fmt.Sprintf("%s:%s@tcp(localhost:3306)/%s","root","root","MovieTicketBooking")
 	var err error
 	database, err = sql.Open("mysql", dsn)
 	if err!=nil{
 		panic(err)
 	}
+}
+
+func Ping(){
+	err := database.Ping()
+	if err!=nil{
+		fmt.Println(err)
+		panic(err)
+	}
+	fmt.Println("Pong")
 }
 
 

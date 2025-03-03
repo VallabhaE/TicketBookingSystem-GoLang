@@ -31,10 +31,17 @@ type Seats struct {
 
 // Seat model represents details of a specific seat in a theater
 type Seat struct {
-	
 	Id        int  `json:"id"`
 	SeatNum int    `json:"SeatNum"`
 	MovieId int `json:"MovieId"`
 	Side    string `json:"Side"`
 	Letter  string `json:"SeatLetter"`
+}
+
+
+type User struct{
+	Id int `json:"id"`
+	Username string `json:"username"`
+	Email string `json:"email"`
+	Password string `json:"password"`
 }

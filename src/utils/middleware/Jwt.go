@@ -1,85 +1,58 @@
 package middleware
 
-
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )
 
-var SIGNING_KEY = []byte("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-var Bearer = "Bearer"
 
-func MethodCheck(expectedMethod string, handler http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != expectedMethod {
-			http.Error(w, ("Invalid request method"),
-				http.StatusMethodNotAllowed)
-			return
-		}
-		handler(w, r)
+// CustomClaims defines the structure of the JWT payload
+type CustomClaims struct {
+	UserID string `json:"user_id"`
+	jwt.RegisteredClaims
+}
+
+func Jwt_sign(name string) string {
+	AddingTime := time.Now().Add(time.Hour)
+	claims := CustomClaims{
+		UserID: name,
+		RegisteredClaims: jwt.RegisteredClaims{
+			Issuer:    "go-jwt-auth",
+			ExpiresAt: jwt.NewNumericDate(AddingTime),
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
+			Subject:   "auth_token",
+		},
 	}
+
+	// Create a new token with the claims
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	tokenString, err := token.SignedString(SIGNING_KEY)
+	if err != nil {
+		panic(err)
+	}
+
+	return tokenString
 }
 
-func JWTMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		tokenString, err := ExtractTokenFromHeader(r)
-		if err != nil {
-			http.Error(w, ("Unauthorized: "+err.Error()), http.StatusUnauthorized)
-			return
-		}
-
-		_, err = ValidateToken(tokenString, SIGNING_KEY)
-
-		if err != nil {
-			http.Error(w, ("Unauthorized: "+err.Error()), http.StatusUnauthorized)
-			return
-		}
-
-		next.ServeHTTP(w, r)
-	})
-}
-
-func ValidateToken(tokenString string, signingKey []byte) (*jwt.Token, error) {
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (any, error) {
+func GetUserId(r *http.Request) int {
+	authHeader := r.Header.Get("Authorization")
+	parts := strings.Split(authHeader, " ")
+	token, _ := jwt.Parse(parts[1], func(token *jwt.Token) (any, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
-		return signingKey, nil
+		return SIGNING_KEY, nil
 	})
 
+	id, err := strconv.Atoi(token.Claims.(jwt.MapClaims)["user_id"].(string))
 	if err != nil {
-		return nil, fmt.Errorf("invalid token: %v", err)
+		panic(err)
 	}
-
-	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		if exp, ok := claims["exp"].(float64); ok {
-			expirationTime := time.Unix(int64(exp), 0)
-
-			if expirationTime.Before(time.Now()) {
-				return nil, fmt.Errorf("token has expired")
-			}
-
-			return token, nil
-		}
-	}
-
-	return nil, fmt.Errorf("invalid token claims")
-}
-
-func ExtractTokenFromHeader(r *http.Request) (string, error) {
-	authHeader := r.Header.Get("Authorization")
-	if authHeader == "" {
-		return "", fmt.Errorf("missing Authorization header")
-	}
-
-	parts := strings.Split(authHeader, " ")
-	if len(parts) != 2 || parts[0] != Bearer {
-		return "", fmt.Errorf("invalid Authorization header format")
-	}
-
-	return parts[1], nil
+	return id
 }
