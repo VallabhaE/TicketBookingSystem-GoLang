@@ -1,6 +1,5 @@
 package api
 
-
 import (
 	"bytes"
 	"net/http"
@@ -33,10 +32,13 @@ func __internalPost(url string, body []byte) (*string, error) {
 }
 
 func Get(url string) (*http.Response, error) {
+
 	return __internalGet(url)
 }
 
-func Post(url,body string) (string,error){
-	data,err := __internalPost(url,[]byte(body))
-	return *data,err
+func Post(url, body string) (string, error) {
+
+	data, err := __internalPost(url, []byte(body))
+	
+	return *data, err
 }

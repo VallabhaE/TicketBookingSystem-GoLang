@@ -9,6 +9,7 @@ import (
 
 var (
 	database *sql.DB
+	
 )
 
 // Init is Mandatory before moving to other functions
