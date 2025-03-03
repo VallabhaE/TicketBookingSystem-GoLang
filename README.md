@@ -20,7 +20,14 @@ Date := 18 Feb 2025
 
 ```
 
+```
+Code is completed without redis
+utilised transcation to lock seat and create order in RazorPay
+and after user paid another route is created to verify his route and add move booked to true if paid successfully 
+and 
 
+**TESTING IS PENDING**
+```
 
 DataBase Design for now
 **Date := 18 Feb 2025**
