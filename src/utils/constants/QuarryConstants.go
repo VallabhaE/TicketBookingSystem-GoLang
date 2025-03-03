@@ -29,6 +29,8 @@ const (
 
 	INSERT_MOVIE = "INSERT INTO MovieInfo(MovieName,MovieDisc,MovieRating,Time,TheaterId) VALUES (?,?,?,?,?);"
 	REMOVE_MOVIE = "DELETE FROM MovieInfo where id = ?"
+	SPECIFIC_THEATRE_MOVIES = "SELECT * FROM Theaters where TheaterId = ?;"
+
 
 	// 	    id INT AUTO_INCREMENT PRIMARY KEY,
 	// 		Letter varchar(255) not null,
