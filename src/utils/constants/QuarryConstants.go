@@ -40,4 +40,5 @@ const (
 
 	INSERT_SEAT = "INSERT INTO Seat(Letter,SeatNum,Side,MovieId) VALUES (?,?,?,?);"
 	REMOVE_SEAT = "DELETE FROM Seat where id = ?"
+	ALL_SEATS = "SELECT * FROM Seat where MovieId = ?"
 )

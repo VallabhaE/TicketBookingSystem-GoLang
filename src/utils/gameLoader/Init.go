@@ -35,6 +35,12 @@ func Start() {
 	// 		-- Temp use Local Cache later add Redis for distributed System Ticket booking
 	//		-- Add RazerPay Payment Integration
 
+
+
+	r.HandleFunc("/GetAllSeats/{movieId}", controllers.GetAllSeats).Methods(http.MethodGet)
+	r.HandleFunc("/LockSeat", controllers.LockSeat).Methods(http.MethodGet)
+	r.HandleFunc("/VerifyPayment", controllers.VerifyPayment).Methods(http.MethodPost)
+
 	fmt.Println("Payment Integration is Pending\nTicket Booking Logic using transactions\nremove local cache and add redis for centrilised system if needed")
 
 	fmt.Println("Starting server on port 8080...")

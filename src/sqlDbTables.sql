@@ -38,7 +38,9 @@ CREATE TABLE Seat (
 		Letter varchar(255) not null,
         SeatNum int not null,
         Side varchar(255) not null,
-        MovieId int not null 
+        MovieId int not null ,
+        locked boolean default false,
+        booked boolean default false
 );
 
 
